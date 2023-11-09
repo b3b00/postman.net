@@ -12,11 +12,11 @@ public static class Extensions
     }
 }
 
-public class Runner
+public class CollectionRunner
 {
     public Collection Collection { get; private set; }
     
-    public Runner(Collection collection)
+    public CollectionRunner(Collection collection)
     {
         Collection = collection;
     }
@@ -52,6 +52,7 @@ public class Runner
     }
     private void RunTestCase(Item item)
     {
+        Console.WriteLine($"Test case {item.Name}");
         RestClient client = new RestClient();
         var request = new RestRequest(item.Request.Url.Raw);
         if (Enum.TryParse<Method>(item.Request.Method.Capitalize(), out var method))

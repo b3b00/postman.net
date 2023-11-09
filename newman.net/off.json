@@ -7,82 +7,198 @@
 	},
 	"item": [
 		{
-			"name": "metropole 2024",
-			"event": [
+			"name": "metropole",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"",
-							"pm.test(\"Response status code is 200\", function () {",
-							"    pm.expect(pm.response.code).to.equal(200);",
-							"});",
-							"",
-							"",
-							"pm.test(\"Verify that the response body is not empty\", function () {",
-							"    const responseData = pm.response.json();",
-							"    ",
-							"    pm.expect(responseData).to.be.an('object');",
-							"    pm.expect(responseData).to.not.be.empty;   ",
-							"});",
-							"",
-							"",
-							"pm.test(\"Validate the response contains the expected number of holidays for the year 2024\", function () {",
-							"    const responseData = pm.response.json();",
-							"    const expectedHolidays = 11;",
-							"    ",
-							"    pm.expect(Object.keys(responseData)).to.have.lengthOf(expectedHolidays);",
-							"});",
-							"",
-							"",
-							"pm.test(\"Verify that each holiday date is in the format 'YYYY-MM-DD'\", function () {",
-							"    const responseData = pm.response.json();",
-							"    ",
-							"    pm.expect(responseData).to.be.an('object');",
-							"    ",
-							"    Object.keys(responseData).forEach(function(date) {",
-							"        pm.expect(date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/, \"Date format is not 'YYYY-MM-DD'\");",
-							"        pm.expect(date.substring(0,4)).to.eq('2024');",
-							"    });",
-							"});",
-							"",
-							"",
-							"pm.test(\"Each holiday date is a non-empty string\", function () {",
-							"    const responseData = pm.response.json();",
-							"    ",
-							"    pm.expect(responseData).to.be.an('object');",
-							"    ",
-							"    Object.values(responseData).forEach(function (holiday) {",
-							"        pm.expect(holiday).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Holiday date should not be empty\");",
-							"    });",
-							"});",
-							"",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://calendrier.api.gouv.fr/jours-feries/metropole/2024.json",
-					"protocol": "https",
-					"host": [
-						"calendrier",
-						"api",
-						"gouv",
-						"fr"
+					"name": "metropole 2024",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the response body is not empty\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.not.be.empty;   ",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response contains the expected number of holidays for the year 2024\", function () {",
+									"    const responseData = pm.response.json();",
+									"    const expectedHolidays = 11;",
+									"    ",
+									"    pm.expect(Object.keys(responseData)).to.have.lengthOf(expectedHolidays);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that each holiday date is in the format 'YYYY-MM-DD'\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    ",
+									"    Object.keys(responseData).forEach(function(date) {",
+									"        pm.expect(date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/, \"Date format is not 'YYYY-MM-DD'\");",
+									"        pm.expect(date.substring(0,4)).to.eq('2024');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Each holiday date is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    ",
+									"    Object.values(responseData).forEach(function (holiday) {",
+									"        pm.expect(holiday).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Holiday date should not be empty\");",
+									"    });",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"path": [
-						"jours-feries",
-						"metropole",
-						"2024.json"
-					]
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://calendrier.api.gouv.fr/jours-feries/metropole/2024.json",
+							"protocol": "https",
+							"host": [
+								"calendrier",
+								"api",
+								"gouv",
+								"fr"
+							],
+							"path": [
+								"jours-feries",
+								"metropole",
+								"2024.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "metropole 2023",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.expect(pm.response.code).to.equal(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the response body is not empty\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.not.be.empty;   ",
+									"});",
+									"",
+									"",
+									"pm.test(\"Validate the response contains the expected number of holidays for the year 2024\", function () {",
+									"    const responseData = pm.response.json();",
+									"    const expectedHolidays = 11;",
+									"    ",
+									"    pm.expect(Object.keys(responseData)).to.have.lengthOf(expectedHolidays);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that each holiday date is in the format 'YYYY-MM-DD'\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    ",
+									"    Object.keys(responseData).forEach(function(date) {",
+									"        pm.expect(date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/, \"Date format is not 'YYYY-MM-DD'\");",
+									"        pm.expect(date.substring(0,4)).to.eq('2024');",
+									"    });",
+									"});",
+									"",
+									"",
+									"pm.test(\"Each holiday date is a non-empty string\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    ",
+									"    Object.values(responseData).forEach(function (holiday) {",
+									"        pm.expect(holiday).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Holiday date should not be empty\");",
+									"    });",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://calendrier.api.gouv.fr/jours-feries/metropole/2024.json",
+							"protocol": "https",
+							"host": [
+								"calendrier",
+								"api",
+								"gouv",
+								"fr"
+							],
+							"path": [
+								"jours-feries",
+								"metropole",
+								"2024.json"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "bin",
+			"item": [
+				{
+					"name": "POST httpbin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"hello\":\"world\",\n    \"one\":1,\n    \"TRUE\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://httpbin.org/post",
+							"protocol": "https",
+							"host": [
+								"httpbin",
+								"org"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

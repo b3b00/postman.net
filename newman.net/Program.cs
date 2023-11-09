@@ -3,10 +3,10 @@
 using System.Text.Json;
 using Jint;
 using net.postman.model;
+using PostMan.Net.Runner;
 
 namespace net.postman.newman
 {
-
     public class Pm
     {
         public void test(string testName, Action test)
@@ -23,16 +23,16 @@ namespace net.postman.newman
             Console.WriteLine(message);
         }
     }
-    
-    
+
+
     public class Program
     {
         public static Collection LoadCollection()
         {
             Console.WriteLine("Hello, World!");
-            var content = File.ReadAllText(@"C:\Users\olduh\dev\PostMan.Net\collection.json");
+            var content = File.ReadAllText(@"off.json");
             var collection = JsonSerializer.Deserialize<Collection>(content);
-            Console.WriteLine($"collection contains {collection.GetTestCaseCount()}");
+            Console.WriteLine($"collection contains {collection.GetTestCaseCount()} test cases");
             return collection;
         }
 
@@ -40,7 +40,7 @@ namespace net.postman.newman
         {
             var engine = new Engine()
                 .SetValue("pm", new Pm())
-                .SetValue("console",new JConsole());
+                .SetValue("console", new JConsole());
             engine.AddModule("prescript", @"
 export const testOuts(left, right) {
     console.log(`testing ${left} againt {right}`);
@@ -58,17 +58,16 @@ testOuts('toto','tata');
 );
 ";
             var parse = new Esprima.JavaScriptParser().ParseScript(testme);
-            
+
             engine.Execute(testme);
-
-            
-
         }
-        
+
         public static void Main(string[] args)
         {
-            // var collection = LoadCollection();
-            jint();
+            var collection = LoadCollection();
+            CollectionRunner runner = new CollectionRunner(collection);
+            runner.Run();
+            //jint();
         }
     }
 }
