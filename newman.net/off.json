@@ -172,6 +172,46 @@
 			"item": [
 				{
 					"name": "POST httpbin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the 'args' field is an empty object\", function () {",
+									"  const responseData = pm.response.json();",
+									"",
+									"  pm.expect(responseData.args).to.be.an('object').and.to.be.empty;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the 'json' field is an object\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.json).to.be.an('object').and.not.to.be.empty;",
+									"  pm.expect(responseData.json.hello).to.be.eq('world');",
+									"  pm.expect(responseData.json.one).to.be.eq(1);",
+									"  pm.expect(responseData.json.TRUE).to.be.eq(true);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Verify that the 'files' field is an empty object\", function () {",
+									"  const responseData = pm.response.json();",
+									"  ",
+									"  pm.expect(responseData.files).to.be.an('object').and.to.be.empty;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
