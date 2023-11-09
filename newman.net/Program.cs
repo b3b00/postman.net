@@ -36,31 +36,7 @@ namespace net.postman.newman
             return collection;
         }
 
-        public static void jint()
-        {
-            var engine = new Engine()
-                .SetValue("pm", new Pm())
-                .SetValue("console", new JConsole());
-            engine.AddModule("prescript", @"
-export const testOuts(left, right) {
-    console.log(`testing ${left} againt {right}`);
-}
-");
-
-            var testme = $@"
-import {{ testOuts }} from 'prescript';
-    pm.test(
-        'this is a test',
- () => {{
-console.log('this is a log from a test');
-testOuts('toto','tata');
-}}
-);
-";
-            var parse = new Esprima.JavaScriptParser().ParseScript(testme);
-
-            engine.Execute(testme);
-        }
+      
 
         public static void Main(string[] args)
         {

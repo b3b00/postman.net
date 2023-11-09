@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostMan.Net.Model", "PostMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostMan.Net.Runner", "PostMan.Net.Runner\PostMan.Net.Runner.csproj", "{5F028742-67CA-419B-8609-E159D2F21972}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsTester", "JsTester\JsTester.csproj", "{6432D737-863E-4794-B336-050A4A1D9F70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{5F028742-67CA-419B-8609-E159D2F21972}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F028742-67CA-419B-8609-E159D2F21972}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F028742-67CA-419B-8609-E159D2F21972}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6432D737-863E-4794-B336-050A4A1D9F70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6432D737-863E-4794-B336-050A4A1D9F70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6432D737-863E-4794-B336-050A4A1D9F70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6432D737-863E-4794-B336-050A4A1D9F70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
