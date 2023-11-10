@@ -6,4 +6,14 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+<!--      <PackageReference Include="Jint" Version="3.0.0-beta-2054" />-->
+        
+      <PackageReference Include="RestSharp" Version="110.2.1-alpha.0.16" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\jint\Jint\Jint.csproj" />
+    </ItemGroup>
+
 </Project>
