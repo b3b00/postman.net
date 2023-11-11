@@ -18,35 +18,9 @@ public class Program
         return response;
     }
     
-    static void jint()
-    {
-        var data = GetData();
-        
-        var engine = new Engine()
-            .SetValue("pm", new Pm(data))
-            .SetValue("console", new JConsole());
-        engine.AddModule("prescript", @"
-export const testOuts(left, right) {
-    console.log(`testing ${left} againt {right}`);
-}
-");
+    
 
-        var testme = $@"
-import {{ testOuts }} from 'prescript';
-    pm.test(
-        'this is a test',
- () => {{
-console.log('this is a log from a test');
-testOuts('toto','tata');
-}}
-);
-";
-        var parse = new Esprima.JavaScriptParser().ParseScript(testme);
-
-        engine.Execute(testme);
-    }
-
-    public static void jinty()
+    public static void jintWithModule()
     {
         var data = GetData();
 
@@ -67,8 +41,9 @@ testOuts('toto','tata');
 // Create a user-defined module and do something with 'lib'
         engine.AddModule("custom", @"
     import { pm, version } from 'lib';
-    const code = pm.response.code;
-    const json = pm.reponse.json();
+    //const code = pm.response.code;
+    //const json = pm.reponse.json();
+const code = pm.Value;
     const x = new JConsole();
     x.log(`status code is >${code}<`);
     export const result = x.log('hello jint '+version);
@@ -81,9 +56,55 @@ testOuts('toto','tata');
         var id = ns.Get("result");
     }
 
+    public static void pmJint()
+    {
+        var data = GetData();
+        
+        var p = new Person {
+            Name = "Mickey Mouse",
+            Age = 23,
+            Response = new Response(data),
+            Address = new Address()
+            {
+                Number = 1,
+                Street = "souris"
+            }
+        };
+
+        var engine = new Engine()
+            .SetValue("pm",new Pm(data))
+            .SetValue("log", new Action<object>(Console.WriteLine))
+            .Execute(@"
+log(`pm.response.code::>${pm.response.code}<`);  
+log(`pm.response.status::>${pm.response.status}<`);
+const data = pm.response.json();
+log(data);
+");
+
+
+    }
+
     public static void Main(string[] args)
     {
-        jinty();
+        pmJint();
     }
     
+}
+
+public class Person 
+{
+    
+    public string Name { get; set; }
+    public int Age { get; set; }
+    
+    public Response Response { get; set; }
+    
+    public Address Address { get; set; }
+}
+
+public class Address
+{
+    public int Number { get; set; }
+    
+    public string Street { get; set; }
 }

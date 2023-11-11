@@ -2,12 +2,12 @@
 using Jint.Runtime;
 using RestSharp;
 
-public class Response : JsValue
+public class Response 
 {
 
     private RestResponse<object> _response;
 
-    public Response(RestResponse<object> response) : base(Types.Object)
+    public Response(RestResponse<object> response) 
     {
         _response = response;
     }
@@ -20,9 +20,5 @@ public class Response : JsValue
     }
 
     public string status => _response.StatusDescription;
-
-    public override object? ToObject()
-    {
-        return this;
-    }
+    
 }

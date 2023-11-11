@@ -2,13 +2,13 @@ using RestSharp;
 using Jint.Native;
 using Jint.Runtime;
 
-public class Pm : JsValue
+public class Pm 
 {
 
 
     
    
-    public Pm(RestResponse<object> restResponse) : base(Types.Object) 
+    public Pm(RestResponse<object> restResponse) 
     {
         response = new Response(restResponse);
     }
@@ -16,12 +16,11 @@ public class Pm : JsValue
     {
         test();
     }
+
+    public int Value { get; set; }= 1789;
     
     public Response response { get; set; }
 
 
-    public override object? ToObject()
-    {
-        return this ;
-    }
+    
 }
