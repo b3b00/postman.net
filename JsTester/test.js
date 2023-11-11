@@ -7,9 +7,12 @@ pm.test('this is a test ', () => {
     pm.expect(pm.response.code).to.equal(200);
     pm.expect(data).to.be.an('object');
 
-    Object.keys(data).forEach(function (date) {
-        pm.expect(date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/, "Date format is not 'YYYY-MM-DD");
-        pm.expect(date.substring(0, 4)).to.eq('2024');
-    });
-
+    
+    for (var p in data) {
+        log(p+ " :: "+data[p]);
+        pm.expect(p).to.match(/^\\d{4}-\\d{2}-\\d{2}$/, "Date format is not 'YYYY-MM-DD");        
+        pm.expect(p.substring(0, 4)).to.eq('2024');
+        pm.expect(data[p]).to.be.a('string');
+    }
+    
 });

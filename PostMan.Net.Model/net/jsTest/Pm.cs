@@ -44,6 +44,8 @@ public class Pm
         }
     }
 
+    
+    
     public Pm An(string type)
     {
         bool ok = false;
@@ -75,41 +77,46 @@ public class Pm
 
                 break;
             }
+            case "array":
+            {
+                ok = !_subject.GetType().IsValueType;
+                if (_subject is JsonElement json)
+                {
+                    ok = ok || json.ValueKind == JsonValueKind.Array;
+                }
+
+                break;
+            }
         }
         
-        if (ok)
+        if (!ok)
         {
-            Console.WriteLine("type is OK");
-            return this;
+            Console.Error.WriteLine($"type error. expecting {type}. found {_subject.GetType().Name}");
         }
 
-        Console.Error.WriteLine($"type error. expecting {type}. found {_subject.GetType().Name}");
         return this;
     }
 
+    public Pm A(string type) => An(type);
+    
     public Pm Equal(object expectation)
     {
-        if (_subject.Equals(expectation))
+        if (!_subject.Equals(expectation))
         {
-            Console.WriteLine("youpiypoupi yeah !");
-        }
-        else
-        {
-            Console.Error.WriteLine("ERROR ! ");
+            Console.Error.WriteLine($"Expecting {expectation} but found {_subject}");
         }
 
         return this;
     }
+
+    public Pm Eq(object expectation) => Equal(expectation);
+    
 
     public Pm Match(string regex, string message)
     {
-        Regex r = new Regex(regex);
+        Regex r = new Regex(regex.Substring(1,regex.Length-2).Replace("\\\\","\\"));
         var match = r.Match(_subject.ToString());
-        if (match.Success)
-        {
-            Console.WriteLine("regew match OK");
-        }
-        else
+        if (!match.Success)
         {
             Console.WriteLine(message+ "  -  "+_subject.ToString());
         }

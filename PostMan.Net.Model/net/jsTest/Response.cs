@@ -1,4 +1,5 @@
-﻿using Jint.Native;
+﻿using System.Text.Json;
+using Jint.Native;
 using Jint.Runtime;
 using RestSharp;
 
@@ -16,7 +17,9 @@ public class Response
 
     public object json()
     {
-        return _response.Data;
+        var t = (_response.Data is JsonElement ? (JsonElement)_response.Data : default);
+        var x =  t.Deserialize<Dictionary<string,object>>();
+        return x;
     }
 
     public string status => _response.StatusDescription;
