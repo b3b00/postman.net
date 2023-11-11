@@ -21,4 +21,11 @@
       <ProjectReference Include="..\PostMan.Net.Model\PostMan.Net.Model.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="test.js" />
+      <Content Include="test.js">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

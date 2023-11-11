@@ -70,18 +70,11 @@ const code = pm.Value;
                 Street = "souris"
             }
         };
-
+        var script = File.ReadAllText("./test.js");
         var engine = new Engine()
             .SetValue("pm",new Pm(data))
             .SetValue("log", new Action<object>(Console.WriteLine))
-            .Execute(@"
-log(`pm.response.code::>${pm.response.code}<`);  
-log(`pm.response.status::>${pm.response.status}<`);
-const data = pm.response.json();
-log(data);
-");
-
-
+            .Execute(script);
     }
 
     public static void Main(string[] args)
