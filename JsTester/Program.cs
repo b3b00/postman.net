@@ -27,7 +27,7 @@ public class Program
 
         var engine = new Engine();
         
-        var pm= JsValue.FromObjectWithType(engine, new Pm(data), typeof(Pm));
+        var pm= JsValue.FromObjectWithType(engine, new Pm("toto",data), typeof(Pm));
         //engine.SetValue("pm", new Pm(data));
         // Create the module 'lib' with the class MyClass and the variable version
         engine.AddModule("lib", builder => builder
@@ -72,7 +72,7 @@ const code = pm.Value;
             }
         };
         var script = File.ReadAllText("./test.js");
-        var pm = new Pm(data);
+        var pm = new Pm("simple test",data);
         var engine = new Engine()
             .SetValue("pm",pm)
             .SetValue("log", new Action<object>(Console.WriteLine))

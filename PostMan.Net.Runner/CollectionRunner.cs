@@ -1,4 +1,6 @@
+using Jint;
 using net.postman.model;
+using PostMan.Net.Model.net.jsTest;
 using RestSharp;
 
 namespace PostMan.Net.Runner;
@@ -16,9 +18,12 @@ public class CollectionRunner
 {
     public Collection Collection { get; private set; }
     
+    public IList<Pm> TestCaseResults { get; private set; }
+    
     public CollectionRunner(Collection collection)
     {
         Collection = collection;
+        TestCaseResults = new List<Pm>();
     }
 
     public void Run()
@@ -72,7 +77,19 @@ public class CollectionRunner
         var response = client.Execute<object>(request);
         Console.WriteLine($"status : {response.StatusCode}");
         Console.WriteLine($"response :{response.Data}");
-    }
 
-   
+        Pm pm = new Pm(item.Name,response);
+        var engine = new Engine()
+            .SetValue("pm",pm)
+            .SetValue("log", new Action<object>(Console.WriteLine));
+
+        foreach (var evt in item.Event)
+        {
+            var script = string.Join('\n', evt.Script.Exec);
+            engine.Execute(script);
+        }   
+        
+        TestCaseResults.Add(pm);
+        
+    }
 }

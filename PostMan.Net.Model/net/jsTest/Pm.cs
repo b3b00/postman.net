@@ -6,13 +6,15 @@ namespace PostMan.Net.Model.net.jsTest;
 
 public class Pm
 {
-    public Pm(RestResponse<object> restResponse)
+    public Pm(string name, RestResponse<object> restResponse)
     {
         response = new Response(restResponse);
         _results = new List<PmTestResult>();
         _status = PmStatus.None;
     }
 
+    private string _name; 
+    
     public int Value { get; set; } = 1789;
 
     public Response response { get; set; }
