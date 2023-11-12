@@ -34,11 +34,18 @@ public class Pm
 
     
     
-    private object _expectation;
 
     private bool _typeCheck;
     
+    private bool _negation;
 
+
+    public void Reset()
+    {
+        _subject = null;
+        _typeCheck = false;
+        _negation = false;
+    }
     
     public void test(string testName, Action test)
     {
@@ -59,12 +66,16 @@ public class Pm
         return this;
     }
 
-    public Pm To
-    {
-        get { return this; }
-    }
+    public Pm To => this;
 
-   
+    public Pm Not
+    {
+        get
+        {
+            _negation = true;
+            return this;
+        }
+    }
 
     public Pm Be
     {
@@ -124,7 +135,7 @@ public class Pm
             }
         }
         
-        if (!ok)
+        if (!ok || (_negation && ok))
         {
             _currentTestResult.SetStatus(PmStatus.Failure);
             _currentTestResult.AddMessage($"type error. expecting {type}. found {_subject.GetType().Name}");
@@ -138,7 +149,8 @@ public class Pm
     
     public Pm Equal(object expectation)
     {
-        if (!_subject.Equals(expectation))
+        var equals = _subject.Equals(expectation); 
+        if (!equals || (_negation && equals))
         {
             _currentTestResult.SetStatus(PmStatus.Failure);
             _currentTestResult.AddMessage($"Expecting {expectation} but found {_subject}");
@@ -150,12 +162,26 @@ public class Pm
 
     public Pm Eq(object expectation) => Equal(expectation);
     
+    public Pm Empty {
+        get
+        {
+            bool empty = string.IsNullOrEmpty(_subject?.ToString()); 
+            if ((!_negation && !empty) || (_negation && empty))
+            {
+                _currentTestResult.SetStatus(PmStatus.Failure);
+                _currentTestResult.AddMessage($"was expected to be ({(_negation ? "not":"")} empty");
+                return this;
+            }
+            _currentTestResult.SetStatus(PmStatus.Success);
+            return this;
+        }
+    }
 
     public Pm Match(string regex, string message)
     {
         Regex r = new Regex(regex.Substring(1,regex.Length-2).Replace("\\\\","\\"));
         var match = r.Match(_subject.ToString());
-        if (!match.Success)
+        if (!match.Success || (_negation && match.Success))
         {
             _currentTestResult.SetStatus(PmStatus.Failure);
             _currentTestResult.AddMessage($"{message} - {_subject.ToString()}");
