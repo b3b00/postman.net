@@ -2,6 +2,7 @@
 
 using Jint;
 using Jint.Native;
+using PostMan.Net.Model.net.jsTest;
 using RestSharp;
 
 public class Program
@@ -71,10 +72,20 @@ const code = pm.Value;
             }
         };
         var script = File.ReadAllText("./test.js");
+        var pm = new Pm(data);
         var engine = new Engine()
-            .SetValue("pm",new Pm(data))
+            .SetValue("pm",pm)
             .SetValue("log", new Action<object>(Console.WriteLine))
             .Execute(script);
+
+        Console.WriteLine($"test is {pm.Status}");
+        if (pm.Status == PmStatus.Failure)
+        {
+            foreach (var result in pm.Results)
+            {
+                Console.WriteLine(result);
+            }
+        }
     }
 
     public static void Main(string[] args)

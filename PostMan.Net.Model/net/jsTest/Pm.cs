@@ -1,27 +1,56 @@
-using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using RestSharp;
-using Jint.Native;
-using Jint.Runtime;
+
+namespace PostMan.Net.Model.net.jsTest;
 
 public class Pm
 {
     public Pm(RestResponse<object> restResponse)
     {
         response = new Response(restResponse);
+        _results = new List<PmTestResult>();
+        _status = PmStatus.None;
     }
 
-    public void test(string testName, Action test)
-    {
-        test();
-    }
+    public int Value { get; set; } = 1789;
 
+    public Response response { get; set; }
+
+    private PmStatus _status;
+
+    public PmStatus Status => _status;
+   
+    
+    private IList<PmTestResult> _results;
+
+    public IList<PmTestResult> Results => _results;
+
+    private PmTestResult _currentTestResult;
 
     private object _subject;
 
+    
+    
     private object _expectation;
 
+    private bool _typeCheck;
+    
+
+    
+    public void test(string testName, Action test)
+    {
+        _currentTestResult = new PmTestResult(testName);
+        test();
+        if (_status != PmStatus.Failure)
+        {
+            _status = _currentTestResult.Status;
+        }
+        _results.Add(_currentTestResult);
+    }
+
+    
+    
     public Pm Expect(object subject)
     {
         _subject = subject;
@@ -33,7 +62,7 @@ public class Pm
         get { return this; }
     }
 
-    private bool _typeCheck;
+   
 
     public Pm Be
     {
@@ -60,6 +89,10 @@ public class Pm
             case "string":
             {
                 ok = _subject is string;
+                if (!ok && _subject is JsonElement json && json.ValueKind == JsonValueKind.String)
+                {
+                    ok = true;
+                }
                 break;
             }
             case "double":
@@ -91,9 +124,11 @@ public class Pm
         
         if (!ok)
         {
-            Console.Error.WriteLine($"type error. expecting {type}. found {_subject.GetType().Name}");
+            _currentTestResult.SetStatus(PmStatus.Failure);
+            _currentTestResult.AddMessage($"type error. expecting {type}. found {_subject.GetType().Name}");
+            return this;
         }
-
+        _currentTestResult.SetStatus(PmStatus.Success);
         return this;
     }
 
@@ -103,9 +138,11 @@ public class Pm
     {
         if (!_subject.Equals(expectation))
         {
-            Console.Error.WriteLine($"Expecting {expectation} but found {_subject}");
+            _currentTestResult.SetStatus(PmStatus.Failure);
+            _currentTestResult.AddMessage($"Expecting {expectation} but found {_subject}");
+            return this;
         }
-
+        _currentTestResult.SetStatus(PmStatus.Success);
         return this;
     }
 
@@ -118,13 +155,14 @@ public class Pm
         var match = r.Match(_subject.ToString());
         if (!match.Success)
         {
-            Console.WriteLine(message+ "  -  "+_subject.ToString());
+            _currentTestResult.SetStatus(PmStatus.Failure);
+            _currentTestResult.AddMessage($"{message} - {_subject.ToString()}");
+            return this;
         }
+        _currentTestResult.SetStatus(PmStatus.Success);
         return this;
     }
         
 
-    public int Value { get; set; } = 1789;
-
-    public Response response { get; set; }
+    
 }

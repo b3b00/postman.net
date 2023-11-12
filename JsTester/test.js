@@ -11,7 +11,7 @@ pm.test('this is a test ', () => {
     for (var p in data) {
         log(p+ " :: "+data[p]);
         pm.expect(p).to.match(/^\\d{4}-\\d{2}-\\d{2}$/, "Date format is not 'YYYY-MM-DD");        
-        pm.expect(p.substring(0, 4)).to.eq('2024');
+        pm.expect(p.substring(0, 4)).to.eq('2025');
         pm.expect(data[p]).to.be.a('string');
     }
     
