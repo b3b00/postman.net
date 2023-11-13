@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using RestSharp;
@@ -8,6 +9,7 @@ public class Pm
 {
     public Pm(string name, RestResponse<object> restResponse)
     {
+        Console.WriteLine($"pm testing {name}");
         response = new Response(restResponse);
         _results = new List<PmTestResult>();
         _status = PmStatus.None;
@@ -49,6 +51,8 @@ public class Pm
     
     public void test(string testName, Action test)
     {
+        Console.WriteLine($"> test {testName}");
+        Reset();
         _currentTestResult = new PmTestResult(testName);
         test();
         if (_status != PmStatus.Failure)
@@ -57,17 +61,31 @@ public class Pm
         }
         _results.Add(_currentTestResult);
     }
-
+    
+    public Pm Have
+    {
+        get
+        {
+            return this;
+        }
+    }
+    
+    
     
     
     public Pm Expect(object subject)
     {
+        
+        Reset();
         _subject = subject;
+        Console.WriteLine($"expect({_subject.ToString()}");
         return this;
     }
 
     public Pm To => this;
 
+    public Pm And => this;
+    
     public Pm Not
     {
         get
@@ -86,7 +104,26 @@ public class Pm
         }
     }
 
-    
+
+    public Pm lengthOf(long length)
+    {
+        bool ok = true;
+        int actualLength = 0;
+        if (_subject is object[] objectArray)
+        {
+            actualLength = objectArray.Length;
+            ok = actualLength == length;
+        }
+        
+        if (_negation == !ok)
+        {
+            _currentTestResult.SetStatus(PmStatus.Failure);
+            _currentTestResult.AddMessage($"array is not of expected length {length}. (found {actualLength}");
+            return this;
+        }
+        _currentTestResult.SetStatus(PmStatus.Success);
+        return this;
+    }
     
     public Pm An(string type)
     {
@@ -135,7 +172,7 @@ public class Pm
             }
         }
         
-        if (!ok || (_negation && ok))
+        if ((_negation && ok) || (!_negation && !ok))
         {
             _currentTestResult.SetStatus(PmStatus.Failure);
             _currentTestResult.AddMessage($"type error. expecting {type}. found {_subject.GetType().Name}");
@@ -150,7 +187,7 @@ public class Pm
     public Pm Equal(object expectation)
     {
         var equals = _subject.Equals(expectation); 
-        if (!equals || (_negation && equals))
+        if ((equals && _negation) || (!_negation && !equals))
         {
             _currentTestResult.SetStatus(PmStatus.Failure);
             _currentTestResult.AddMessage($"Expecting {expectation} but found {_subject}");
@@ -181,7 +218,7 @@ public class Pm
     {
         Regex r = new Regex(regex.Substring(1,regex.Length-2).Replace("\\\\","\\"));
         var match = r.Match(_subject.ToString());
-        if (!match.Success || (_negation && match.Success))
+        if (_negation == match.Success)//((_negation && match.Success) || (!_negation && !match.Success))
         {
             _currentTestResult.SetStatus(PmStatus.Failure);
             _currentTestResult.AddMessage($"{message} - {_subject.ToString()}");
